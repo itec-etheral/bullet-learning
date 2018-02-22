@@ -4,6 +4,7 @@ import pybullet as p
 class URDFObject(object):
     """
     class to process all the URDF references 
+    usually inherited by other object creator classes
     """
 
     def __init__(self, sensor_pos_vector3): 
