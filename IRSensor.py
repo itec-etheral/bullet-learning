@@ -7,7 +7,9 @@ class IRSensor(URDFObject):
 
     """
     sensor_pos_vector3 a 3 length list
+    TODO add car references to replace the sensorPos in the get_sensor_response() func
     """
+    
 
     def __init__(self, sensor_pos_vector3):
         super().__init__(sensor_pos_vector3)
