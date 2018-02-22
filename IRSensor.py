@@ -12,7 +12,7 @@ class IRSensor(URDFObject):
     
 
     def __init__(self, sensor_pos_vector3):
-        super().__init__(sensor_pos_vector3)
+        super().__init__(sr_cnst.consts_obj.IRSENSOR_URDF_PATH, sensor_pos_vector3)
 
 
     def get_sensor_response(self, sensor_road_input) -> float: # reference to the current point in the road
@@ -29,7 +29,7 @@ class IRSensor(URDFObject):
         response = np.array(roadPos) - np.array(sensorPos) # difference and transform it
         # in a np array -> narray for further calculations
         response_mag = np.sum(response*response) ** 0.5 # magnitude
-        mapped_responde = response_mag / sr_cnst.consts.MAX_ROAD_MARGIN
+        mapped_responde = response_mag / sr_cnst.consts_obj.MAX_ROAD_MARGIN
         # how the distance > MAX_ROAD_MARGIN -> the value it's mapped between [0,1]
         print("MAPPED_RESPONDE: " + str(mapped_responde))
         return mapped_responde
