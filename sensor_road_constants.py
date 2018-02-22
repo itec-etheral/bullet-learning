@@ -31,7 +31,7 @@ class Const(object):
     
     @constant
     def ROAD_POINTS_STEP() -> float:
-        return 0.5
+        return 0.4
 
     @constant
     def A_ROAD_ELLIPSE() -> float: # it has to be >= MAX_ROAD_POINTS/2 to work
