@@ -4,7 +4,7 @@ from numpy import arange
 
 class Road(object):
 
-    "Road generator that uses RoadPoints class"
+    "Road generator that uses RoadPoint class as atoms"
 
     def __init__(self):
         self._road_points = []
