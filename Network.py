@@ -117,5 +117,5 @@ class Network(object):
                                            self._output_network: np.transpose(output_nn)})))
 
             # save weights
-            self._np_weights = sess.run(self._weights)
-            self._np_biases = sess.run(self._biases)
+            self._np_weights = np.array(sess.run(self._weights))
+            self._np_biases = np.array(sess.run(self._biases))
