@@ -16,6 +16,7 @@ sensor2 = irs.IRSensor([1, 0, 0])
 sensor1.get_sensor_response(sensor2)
 road = Road()
 road.create_road()
+print("Lenght: {len}".format(len=len(road._road_points)))
 
 while 1:
     p.stepSimulation()
