@@ -23,7 +23,7 @@ class Const(object):
 
     @constant
     def ROADPOINT_URDF_PATH() -> str:
-        return "table\\table.urdf"
+        return "duck_vhacd.urdf"
 
     @constant
     def MAX_ROAD_POINTS() -> int:
