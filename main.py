@@ -7,7 +7,7 @@ p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath()) #use by loadURDF
 
 p.loadURDF("plane.urdf")
-p.setGravity(0, 0, -10)
+p.setGravity(0, 0, -11)
 
 
 sensor1 = irs.IRSensor([0, 0, 0])
