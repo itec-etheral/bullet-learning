@@ -1,38 +1,49 @@
 import pybullet as p
 import sensor_road_constants as sr_cnst
 import numpy as np
-from URDFObjects import URDFObject 
 
-class IRSensor(URDFObject):
+
+class IRSensor(object):
 
     """
-    sensor_pos_vector3 a 3 length list
-    TODO add car references to replace the sensorPos in the get_sensor_response() func
+    sensor_pos_vector3 =  vector3 list for the position
     """
-    
 
-    def __init__(self, sensor_pos_vector3):
-        super().__init__(sr_cnst.consts_obj.IRSENSOR_URDF_PATH, sensor_pos_vector3)
+    def __init__(self):
+        self._sensor_pos_vector3 = []
 
+    def initialize_sensor(self, position):
+        if len(position) is 3:
+            self._sensor_pos_vector3 = position
+        else:
+            raise ValueError("The position has to be a 3 length list")
 
-    def get_sensor_response(self, sensor_road_input) -> float: # reference to the current point in the road
+    def _have_position(self) -> bool:
+        if len(self._sensor_pos_vector3) is 3:
+            return True
+
+        return False
+
+    def get_sensor_response(self, road_object_position) -> float:  # reference to the current point in the road
         """
         it returns a value between [0, 1] 
             - for big distances the value goes towards 1
             - for small distances the value goes towards 0
             (0 when the sensor it's on the middle of the road, 1 when it's on the MAX_MARGIN_VALUE)
         """
-        # getting the positions of the 2 objects
-        sensorPos, _ = p.getBasePositionAndOrientation(self._sensor_obj)
-        roadPos, _ = p.getBasePositionAndOrientation(sensor_road_input.get_sensor_obj())
 
-        response = np.array(roadPos) - np.array(sensorPos) # difference and transform it
-        # in a np array -> narray for further calculations
-        response_mag = np.sum(response*response) ** 0.5 # magnitude
-        mapped_responde = response_mag / sr_cnst.consts_obj.MAX_ROAD_MARGIN
-        # how the distance > MAX_ROAD_MARGIN -> the value it's mapped between [0,1]
-        print("MAPPED_RESPONDE: " + str(mapped_responde))
-        return mapped_responde
+        if self._have_position():
+
+            response = np.array(road_object_position) - np.array(self._sensor_pos_vector3) # difference and transform it
+            # in a np array -> narray for further calculations
+            response_mag = np.sum(response*response) ** 0.5  # magnitude
+            mapped_responde = response_mag / sr_cnst.consts_obj.MAX_ROAD_MARGIN
+            # how the distance > MAX_ROAD_MARGIN -> the value it's mapped between [0,1]
+            # if the value is >1 it means the robot it's out of it's boundaries
+            return mapped_responde
+        else:
+            raise Exception("Sensor position not initialized!")
+
 
 
 

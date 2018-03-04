@@ -10,9 +10,9 @@ class URDFObject(object):
     def __init__(self, urdf_path, sensor_pos_vector3): 
         # p.setAdditionalSearchPath(pybullet_data.getDataPath())
         if len(sensor_pos_vector3) == 3:
-            self._sensor_obj = p.loadURDF(urdf_path, sensor_pos_vector3) 
+            self._obj = p.loadURDF(urdf_path, sensor_pos_vector3)
         else:
-            raise ValueError("use a 3 length ensor_pos_vector3 list as argument")
+            raise ValueError("use a 3 length sensor_pos_vector3 list as argument")
 
     def get_sensor_obj(self):
-        return self._sensor_obj
+        return self._obj

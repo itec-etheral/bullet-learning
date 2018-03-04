@@ -15,7 +15,7 @@ class Const(object):
     @constant # readonly decorative
     def MAX_ROAD_MARGIN() -> float:
         # the right and left extremes of the road (with - for the left side)
-        return 1.5
+        return 3.2
 
     @constant 
     def IRSENSOR_URDF_PATH() -> str:
@@ -23,7 +23,11 @@ class Const(object):
 
     @constant
     def ROADPOINT_URDF_PATH() -> str:
-        return "table\\table.urdf"
+        return "D:\\Projects\\Python\\bullet_car_learner_ripo\\bullet-learning\\duck2.urdf"
+
+    @constant
+    def ROBOT_URDF_PATH() -> str:
+        return "robotel2.0.urdf"
 
     @constant
     def MAX_ROAD_POINTS() -> int:
