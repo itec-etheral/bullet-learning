@@ -71,14 +71,16 @@ class Network(object):
         :return: a scalar: loss
         """
         y_ = self._model_for_nn(keep_prob)
-        cross_entropy = tf.reduce_mean(
-            tf.nn.softmax_cross_entropy_with_logits(labels=self._output_network, logits=y_)
-        )
+        # loss = tf.reduce_mean(
+        #     tf.nn.softmax_cross_entropy_with_logits(labels=self._output_network, logits=y_)
+        # )
+
+        loss = np.sum((y_ - self._output_network) ** 2) / tf.cast(tf.size(y_), tf.float64)
 
         regularizes_loss = np.sum(np.array(
             [tf.nn.l2_loss(w) for w in self._weights]
         ))
-        return cross_entropy + regularization_loss_step * regularizes_loss
+        return loss + regularization_loss_step * regularizes_loss
 
     def _optimization(self, minimize_step, regularization_loss_step, keep_prob):
         """
@@ -89,7 +91,7 @@ class Network(object):
         """
         return tf.train.GradientDescentOptimizer(minimize_step).minimize(self._loss(regularization_loss_step, keep_prob))
 
-    def session(self, minimize_step, regularization_loss_step, keep_prob, input_nn, output_nn):
+    def session_train(self, minimize_step, regularization_loss_step, keep_prob, input_nn, output_nn):
         """
         :param minimize_step: hyper-parameter for the gradient descent optimizer
         :param regularization_loss_step: hyper-parameter to twick the loss
