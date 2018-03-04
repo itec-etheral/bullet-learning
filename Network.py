@@ -18,11 +18,17 @@ class Network(object):
         self._num_layer = len(sizes)
         if self._num_layer >= 3:
             self._sizes = sizes
+
+            # used for tensor flow
             self._weights = [tf.Variable(tf.cast(tf.random_normal([y, x]), tf.float64)) for x, y in zip(sizes[:-1], sizes[1:])]
             self._biases = [tf.Variable(tf.cast(tf.random_normal([y, 1]), tf.float64)) for y in sizes[1:]]
 
             self._input_network = tf.placeholder(tf.float64, shape=[sizes[0], None])
             self._output_network = tf.placeholder(tf.float64, shape=[sizes[self._num_layer - 1], None])
+
+            # used for normal computations
+            self._np_weights = [np.zeros((y, x)) for x, y in zip(sizes[:-1], sizes[1:])]
+            self._np_biases = [np.zeros((y, 1)) for y in sizes[1:]]
         else:
             raise ValueError("This network works only with >= 3 layers")
 
@@ -47,6 +53,16 @@ class Network(object):
 
         # compute last layer
         return tf.matmul(self._weights[self._num_layer - 2], y) + self._biases[self._num_layer - 2]
+
+    def model_output(self, input_model):
+        # compute first layer
+        y = np.dot(self._np_weights[0], input_model) + self._np_biases[0]
+
+        # compute all the other layers
+        for step in range(1, self._num_layer - 1):
+            y = np.dot(self._np_weights[step], y) + self._np_biases[step]
+
+        return y
 
     def _loss(self, regularization_loss_step, keep_prob):
         """
@@ -97,3 +113,7 @@ class Network(object):
             accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
             print("Accuracy: {}".format(accuracy.eval(feed_dict={self._input_network: np.transpose(input_nn),
                                            self._output_network: np.transpose(output_nn)})))
+
+            # save weights
+            self._np_weights = sess.run(self._weights)
+            self._np_biases = sess.run(self._biases)
