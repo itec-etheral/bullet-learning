@@ -25,13 +25,15 @@ class Robotel(URDFObject):
     def start_joint_sensor_number() -> int:
         return 4
 
+    
+    # TODO this function has to be called everytime get_sensors_response() is used -> to get the new global position of the sensors
     def _attach_sensors_to_robot(self) -> list:
         sensors = []
         current_joint = Robotel.start_joint_sensor_number()
 
         for _ in range(Robotel.number_of_sensosr()):
             sensor = IRSensor()
-            sensor_position = list(p.getLinkState(self._obj, current_joint)[0])
+            sensor_position = list(p.getLinkState(self._obj, current_joint)[0]) #TODO + robotel position
             # get the position as a list of 3 elements
             sensor.initialize_sensor(sensor_position)
             sensors.append(sensor)
@@ -40,6 +42,7 @@ class Robotel(URDFObject):
 
         return sensors
 
+    # TODO retake the sensors position 
     def get_sensors_response(self, current_road_point_position) -> list:
         # a list of len(number_of_sensosr()) outputs
         output = []
