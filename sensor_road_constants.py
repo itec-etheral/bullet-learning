@@ -6,7 +6,6 @@ def constant(f): # readonly decorative
     return property(fget, fset)
 
 
-
 class Const(object):
     """
     class used for sensor and road constants
@@ -27,18 +26,18 @@ class Const(object):
 
     @constant
     def ROBOT_URDF_PATH() -> str:
-        return "robotel2.0.urdf"
+        return "goodbot.urdf"
 
     @constant
-    def MAX_ROAD_POINTS() -> int:
+    def MAX_ROAD_DISTANCE() -> int:
         return 20
     
     @constant
     def ROAD_POINTS_STEP() -> float:
-        return 0.4
+        return 0.0001
 
     @constant
-    def A_ROAD_ELLIPSE() -> float: # it has to be >= MAX_ROAD_POINTS/2 to work
+    def A_ROAD_ELLIPSE() -> float: # it has to be >= MAX_ROAD_DISTANCE/2 to work
         return 10
 
     @constant
@@ -49,5 +48,13 @@ class Const(object):
     def DEVIATION_ROAD() -> float:
         return 0.6
 
+    def NUMBER_OF_POINTS(self) -> float:
+        return float(self.MAX_ROAD_DISTANCE) * 2 / self.ROAD_POINTS_STEP
 
-consts_obj = Const() # Const instance to call the class 
+    @constant
+    def ROAD_POINT_ERROR() -> float:
+        return 0.472269
+
+
+consts_obj = Const()  # Const instance to call the class
+print("ROAD HAS: ", consts_obj.NUMBER_OF_POINTS(), " POINTS!")

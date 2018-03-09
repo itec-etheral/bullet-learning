@@ -24,6 +24,12 @@ class IRSensor(object):
 
         return False
 
+    def get_position(self) -> list:
+        if self._have_position():
+            return self._sensor_pos_vector3
+        else:
+            raise Exception("Sensor position not initialized!")
+
     def get_sensor_response(self, road_object_position) -> float:  # reference to the current point in the road
         """
         it returns a value between [0, 1] 
@@ -34,8 +40,10 @@ class IRSensor(object):
 
         if self._have_position():
 
-            response = np.array(road_object_position) - np.array(self._sensor_pos_vector3) # difference and transform it
-            # in a np array -> narray for further calculations
+            response = (np.array([road_object_position[0], road_object_position[1]])
+                        - np.array([self._sensor_pos_vector3[0], self._sensor_pos_vector3[1]]))
+            # difference and transform it
+            # in a np array -> narray for further calculations (take in consideration only the x and y axis)
             response_mag = np.sum(response*response) ** 0.5  # magnitude
             mapped_responde = response_mag / sr_cnst.consts_obj.MAX_ROAD_MARGIN
             # how the distance > MAX_ROAD_MARGIN -> the value it's mapped between [0,1]

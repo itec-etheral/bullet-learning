@@ -27,7 +27,7 @@ class Road(object):
 
     def _road_vec3_generator(self, conj_y=False) -> list:
         
-        centralized_max_x = consts_obj.MAX_ROAD_POINTS/2
+        centralized_max_x = consts_obj.MAX_ROAD_DISTANCE / 2
 
         x = arange(-centralized_max_x, centralized_max_x, consts_obj.ROAD_POINTS_STEP)
         # domain of points to generate coordonates centered in 0
